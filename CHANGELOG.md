@@ -1,5 +1,9 @@
 # Changelog
 
+## \[0.16.3]
+
+- [`0371359b`](https://github.com/tauri-apps/tao/commit/0371359bd7fb8e4f010c9d3e30a2909f14c88558)([#746](https://github.com/tauri-apps/tao/pull/746)) On macOS, force `NativeImage` height to be `18` to have consistent size for all icons and match custom icons.
+
 ## \[0.16.2]
 
 - [`0e950f82`](https://github.com/tauri-apps/tao/commit/0e950f8263ff349504285b68d51c7850146549d5)([#731](https://github.com/tauri-apps/tao/pull/731)) Fix build error on target i686-pc-windows-msvc
