@@ -30,7 +30,12 @@ pub const kAEGetURL: u32 = 0x4755524c;
 // Global callback for rustdesk
 extern "C" {
   fn handle_apple_event(obj: &Object, sel: Sel, event: u64, reply: u64) -> BOOL;
-  fn service_handle_will_become_active(obj: &Object, sel: Sel, id: id) -> BOOL;
+  fn service_should_handle_reopen(
+    obj: &Object,
+    sel: Sel,
+    sender: id,
+    hasVisibleWindows: BOOL,
+  ) -> BOOL;
 }
 
 pub struct AuxDelegateState {
