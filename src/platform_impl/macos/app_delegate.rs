@@ -161,7 +161,6 @@ extern "C" fn application_open_urls(_: &Object, _: Sel, _: id, urls: id) -> () {
 
 extern "C" fn application_will_become_active(obj: &Object, sel: Sel, id: id) {
   trace!("Triggered `applicationWillBecomeActive`");
-  unsafe { service_handle_will_become_active(obj, sel, id) }
 }
 
 extern "C" fn application_handle_apple_event(
