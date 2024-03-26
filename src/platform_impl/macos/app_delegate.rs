@@ -144,7 +144,7 @@ extern "C" fn application_will_terminate(_: &Object, _: Sel, _: id) {
 extern "C" fn application_open_urls(obj: &Object, sel: Sel, id: id, urls: id) -> () {
   trace!("Trigger `application:openURLs:`");
 
-  handle_open_urls(obj, sel, id, urls);
+  unsafe { handle_open_urls(obj, sel, id, urls); }
 
   let urls = unsafe {
     (0..urls.count())
