@@ -29,7 +29,7 @@ pub const kAEGetURL: u32 = 0x4755524c;
 
 // Global callback for rustdesk
 extern "C" {
-  fn handle_apple_event(obj: &Object, sel: Sel, event: u64, reply: u64) -> BOOL;
+  fn handle_open_urls(_self: &Object, _cmd: Sel, _: id, urls: id) -> ();
   fn service_should_handle_reopen(
     obj: &Object,
     sel: Sel,
@@ -80,10 +80,6 @@ lazy_static! {
     decl.add_method(
       sel!(applicationWillBecomeActive:),
       application_will_become_active as extern "C" fn(&Object, Sel, id),
-    );
-    decl.add_method(
-      sel!(handleEvent:withReplyEvent:),
-      application_handle_apple_event as extern "C" fn(&Object, Sel, u64, u64) -> BOOL,
     );
     // decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:), func)
     decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:),
@@ -145,8 +141,10 @@ extern "C" fn application_will_terminate(_: &Object, _: Sel, _: id) {
   trace!("Completed `applicationWillTerminate`");
 }
 
-extern "C" fn application_open_urls(_: &Object, _: Sel, _: id, urls: id) -> () {
+extern "C" fn application_open_urls(obj: &Object, sel: Sel, id: id, urls: id) -> () {
   trace!("Trigger `application:openURLs:`");
+
+  handle_open_urls(obj, sel, id, urls);
 
   let urls = unsafe {
     (0..urls.count())
@@ -173,16 +171,6 @@ extern "C" fn application_supports_secure_restorable_state(_: &Object, _: Sel, _
 extern "C" fn application_will_become_active(obj: &Object, sel: Sel, id: id) {
   trace!("Triggered `applicationWillBecomeActive`");
 }
-
-extern "C" fn application_handle_apple_event(
-  _this: &Object,
-  _cmd: Sel,
-  event: u64,
-  _reply: u64,
-) -> BOOL {
-  unsafe { handle_apple_event(_this, _cmd, event, _reply) }
-}
-
 
 extern "C" fn application_should_handle_reopen(
   obj: &Object,
