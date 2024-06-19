@@ -131,7 +131,6 @@ extern "C" fn dealloc(this: &Object, _: Sel) {
 }
 
 extern "C" fn did_finish_launching(this: &Object, _: Sel, _: id) {
-  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
   trace!("Triggered `applicationDidFinishLaunching`");
   AppState::launched(this);
   trace!("Completed `applicationDidFinishLaunching`");
@@ -171,6 +170,7 @@ extern "C" fn application_supports_secure_restorable_state(_: &Object, _: Sel, _
  }
 
 extern "C" fn application_will_become_active(obj: &Object, sel: Sel, id: id) {
+  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
   trace!("Triggered `applicationWillBecomeActive`");
 }
 
