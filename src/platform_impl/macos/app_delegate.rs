@@ -4,7 +4,6 @@
 
 use crate::{platform::macos::ActivationPolicy, platform_impl::platform::app_state::AppState};
 
-use cocoa::appkit::{NSApp, NSApplication, NSApplicationActivationPolicy::*};
 use cocoa::base::id;
 use cocoa::foundation::NSString;
 use objc::{
@@ -81,10 +80,6 @@ lazy_static! {
     decl.add_method(
       sel!(applicationWillBecomeActive:),
       application_will_become_active as extern "C" fn(&Object, Sel, id),
-    );
-    decl.add_method(
-      sel!(applicationDidBecomeActive:),
-      application_did_become_active as extern "C" fn(&Object, Sel, id),
     );
     // decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:), func)
     decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:),
@@ -175,10 +170,6 @@ extern "C" fn application_supports_secure_restorable_state(_: &Object, _: Sel, _
 
 extern "C" fn application_will_become_active(obj: &Object, sel: Sel, id: id) {
   trace!("Triggered `applicationWillBecomeActive`");
-}
-
-extern "C" fn application_did_become_active(obj: &Object, sel: Sel, id: id) {
-  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
 }
 
 extern "C" fn application_should_handle_reopen(
