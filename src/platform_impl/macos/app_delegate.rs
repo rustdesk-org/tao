@@ -4,6 +4,7 @@
 
 use crate::{platform::macos::ActivationPolicy, platform_impl::platform::app_state::AppState};
 
+use cocoa::appkit::{NSApp, NSApplication, NSApplicationActivationPolicy::*};
 use cocoa::base::id;
 use cocoa::foundation::NSString;
 use objc::{
@@ -130,6 +131,7 @@ extern "C" fn dealloc(this: &Object, _: Sel) {
 }
 
 extern "C" fn did_finish_launching(this: &Object, _: Sel, _: id) {
+  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
   trace!("Triggered `applicationDidFinishLaunching`");
   AppState::launched(this);
   trace!("Completed `applicationDidFinishLaunching`");
