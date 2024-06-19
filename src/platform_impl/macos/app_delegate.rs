@@ -82,6 +82,10 @@ lazy_static! {
       sel!(applicationWillBecomeActive:),
       application_will_become_active as extern "C" fn(&Object, Sel, id),
     );
+    decl.add_method(
+      sel!(applicationDidBecomeActive:),
+      application_did_become_active as extern "C" fn(&Object, Sel, id),
+    );
     // decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:), func)
     decl.add_method(sel!(applicationShouldHandleReopen:hasVisibleWindows:),
     application_should_handle_reopen as extern "C" fn (&Object, Sel, id, BOOL) -> BOOL);
@@ -170,8 +174,11 @@ extern "C" fn application_supports_secure_restorable_state(_: &Object, _: Sel, _
  }
 
 extern "C" fn application_will_become_active(obj: &Object, sel: Sel, id: id) {
-  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
   trace!("Triggered `applicationWillBecomeActive`");
+}
+
+extern "C" fn application_did_become_active(obj: &Object, sel: Sel, id: id) {
+  unsafe { NSApp().setActivationPolicy_(NSApplicationActivationPolicyAccessory); }
 }
 
 extern "C" fn application_should_handle_reopen(
